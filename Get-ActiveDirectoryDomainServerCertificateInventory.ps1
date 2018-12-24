@@ -7,7 +7,7 @@ param()
 # Get all "active" domain servers, test them, sort
 $staledate = (Get-Date).AddDays(-90)
 $computers = Get-ADComputer -Filter {(OperatingSystem -Like "*Server*") -and (Enabled -eq $True) -and (LastLogonDate -ge $staledate) -and (Modified -ge $staledate) -and (PasswordLastSet -ge $staledate) -and (whenChanged -ge $staledate)} | 
-Select name -expandproperty name | Where {(Resolve-DNSName $_.name -ea 0) -and (Test-Connection -ComputerName $_.Name -Count 1 -ea 0)} | Sort
+Select-Object name -expandproperty name | Where-Object {(Resolve-DNSName $_.name -ea 0) -and (Test-Connection -ComputerName $_.Name -Count 1 -ea 0)} | Sort-Object
 
 # Progress Bar
 $Id = 101
