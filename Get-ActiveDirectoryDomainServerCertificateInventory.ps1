@@ -4,8 +4,6 @@
 
 [CmdletBinding()]
 param()
-Begin {}
-process{
 # Get all "active" domain servers, test them, sort
 $staledate = (Get-Date).AddDays(-90)
 $computers = Get-ADComputer -Filter {(OperatingSystem -Like "*Server*") -and (Enabled -eq $True) -and (LastLogonDate -ge $staledate) -and (Modified -ge $staledate) -and (PasswordLastSet -ge $staledate) -and (whenChanged -ge $staledate)} | 
@@ -141,5 +139,4 @@ foreach ($computer in $computers){
     }
 # Write final output
 $inv | Set-Content "C:\Temp\cert-report-out.csv"
-}
-end{}
+
